@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bag Portfolio</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .table-container {
+            width: 80%; /* 稍微加宽一点以适应新加入的一列 */
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            overflow: hidden;
+            max-width: 1200px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 13px;
+            color: #333;
+        }
+
+        th {
+            background-color: #2b3d4f;
+            color: white;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            user-select: none;
+            transition: background-color 0.2s;
+            position: relative;
+            padding-right: 25px;
+        }
+
+        th:hover {
+            background-color: #3c5268;
+        }
+
+        /* 默认无序时的占位箭头 */
+        th::after {
+            content: '↕';
+            color: rgba(255, 255, 255, 0.3);
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+        }
+
+        /* 升序和降序时的箭头 */
+        th.asc::after {
+            content: '↑';
+            color: #fff;
+        }
+
+        th.desc::after {
+            content: '↓';
+            color: #fff;
+        }
+
+        th.right, td.right {
+            text-align: right;
+        }
+
+        th.right::after {
+            right: 12px;
+        }
+
+        th.center, td.center {
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fbfbfb;
+        }
+
+        tr {
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        tr:last-child {
+            border-bottom: none;
+        }
+
+        td.negative {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        td.positive {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            padding: 24px 32px;
+            background-color: white;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #2c3e50;
+        }
+
+        /* 专门适配 iPhone 等移动端设备的样式 */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px 10px;
+            }
+
+            .table-container {
+                width: 100%;
+                border-radius: 8px;
+            }
+
+            th, td {
+                white-space: nowrap; /* 防止表格在手机上因为过窄而自动换行叠字 */
+                padding: 12px 14px;
+            }
+
+            .stats-container {
+                flex-wrap: wrap; /* 允许换行 */
+                gap: 20px;
+                padding: 20px;
+                justify-content: space-between;
+            }
+
+            .stat-item {
+                width: 45%; /* 手机上两栏排列 */
+                align-items: flex-start; /* 居左显示更对齐 */
+            }
+
+            .stat-value {
+                font-size: 18px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="table-container">
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="center">#</th>
+                        <th>BRAND</th>
+                        <th>SERIES</th>
+                        <th class="right">RRP<br>(AUD)</th>
+                        <th class="right">PURCHASE PRICE<br>(AUD)</th>
+                        <th class="right">RESALE PRICE<br>(AUD)</th>
+                        <th class="right">DROP / INCREASE<br>%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="center">1</td>
+                        <td>Chanel</td>
+                        <td>Mini Classic Flap</td>
+                        <td class="right">18,500</td>
+                        <td class="right">6,500</td>
+                        <td class="right">12,000</td>
+                        <td class="right positive">+84.6%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">2</td>
+                        <td>Chanel</td>
+                        <td>mini shopping bag</td>
+                        <td class="right">11,000</td>
+                        <td class="right">7,700</td>
+                        <td class="right">9,500</td>
+                        <td class="right positive">+23.4%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">3</td>
+                        <td>Celine</td>
+                        <td>Classic Box Small</td>
+                        <td class="right">7,000</td>
+                        <td class="right">3,300</td>
+                        <td class="right">2,200</td>
+                        <td class="right negative">-33.3%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">4</td>
+                        <td>Goyard</td>
+                        <td>Saint Louis PM</td>
+                        <td class="right">2,800</td>
+                        <td class="right">3,000</td>
+                        <td class="right">2,200</td>
+                        <td class="right negative">-26.7%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">5</td>
+                        <td>Celine</td>
+                        <td>Seau Sangle</td>
+                        <td class="right">3,800</td>
+                        <td class="right">2,300</td>
+                        <td class="right">1,500</td>
+                        <td class="right negative">-34.8%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">6</td>
+                        <td>The Row</td>
+                        <td>N/S Park Tote</td>
+                        <td class="right">3,375</td>
+                        <td class="right">2,400</td>
+                        <td class="right">1,300</td>
+                        <td class="right negative">-45.8%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">7</td>
+                        <td>Celine</td>
+                        <td>Ava (Triomphe canvas)</td>
+                        <td class="right">3,000</td>
+                        <td class="right">2,200</td>
+                        <td class="right">1,200</td>
+                        <td class="right negative">-45.5%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">8</td>
+                        <td>Givenchy</td>
+                        <td>Antigona Mini</td>
+                        <td class="right">3,450</td>
+                        <td class="right">2,500</td>
+                        <td class="right">1,000</td>
+                        <td class="right negative">-60.0%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">9</td>
+                        <td>Louis Vuitton</td>
+                        <td>Alma PM (Epi)</td>
+                        <td class="right">3,300</td>
+                        <td class="right">2,400</td>
+                        <td class="right">1,000</td>
+                        <td class="right negative">-58.3%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">10</td>
+                        <td>Loewe</td>
+                        <td>Barcelona</td>
+                        <td class="right">3,800</td>
+                        <td class="right">2,600</td>
+                        <td class="right">800</td>
+                        <td class="right negative">-69.2%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">11</td>
+                        <td>Saint Laurent</td>
+                        <td>Cassandra / Envelope chain wallet</td>
+                        <td class="right">1,950</td>
+                        <td class="right">1,200</td>
+                        <td class="right">800</td>
+                        <td class="right negative">-33.3%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">12</td>
+                        <td>Lemaire</td>
+                        <td>Croissant</td>
+                        <td class="right">1,750</td>
+                        <td class="right">960</td>
+                        <td class="right">800</td>
+                        <td class="right negative">-16.7%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">13</td>
+                        <td>Celine</td>
+                        <td>Frame clutch</td>
+                        <td class="right">2,200</td>
+                        <td class="right">2,200</td>
+                        <td class="right">650</td>
+                        <td class="right negative">-70.5%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">14</td>
+                        <td>Givenchy</td>
+                        <td>Antigona printed tote</td>
+                        <td class="right">3,000</td>
+                        <td class="right">900</td>
+                        <td class="right">600</td>
+                        <td class="right negative">-33.3%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">15</td>
+                        <td>Bao Bao Issey Miyake</td>
+                        <td>Lucent / Prism x2</td>
+                        <td class="right">2,500</td>
+                        <td class="right">690</td>
+                        <td class="right">500</td>
+                        <td class="right negative">-27.5%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">16</td>
+                        <td>Chloé</td>
+                        <td>Faye</td>
+                        <td class="right">2,400</td>
+                        <td class="right">960</td>
+                        <td class="right">350</td>
+                        <td class="right negative">-63.5%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">17</td>
+                        <td>Mansur Gavriel</td>
+                        <td>Bucket Bag</td>
+                        <td class="right">1,100</td>
+                        <td class="right">650</td>
+                        <td class="right">200</td>
+                        <td class="right negative">-69.2%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">18</td>
+                        <td>BY FAR</td>
+                        <td>White croc shoulder</td>
+                        <td class="right">850</td>
+                        <td class="right">690</td>
+                        <td class="right">150</td>
+                        <td class="right negative">-78.3%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">19</td>
+                        <td>BY FAR</td>
+                        <td>Green top-handle</td>
+                        <td class="right">850</td>
+                        <td class="right">360</td>
+                        <td class="right">120</td>
+                        <td class="right negative">-66.7%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">20</td>
+                        <td>BY FAR</td>
+                        <td>Rachel brown croc</td>
+                        <td class="right">700</td>
+                        <td class="right">650</td>
+                        <td class="right">120</td>
+                        <td class="right negative">-81.5%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">21</td>
+                        <td>Staud</td>
+                        <td>Bissett Bucket</td>
+                        <td class="right">650</td>
+                        <td class="right">400</td>
+                        <td class="right">100</td>
+                        <td class="right negative">-75.0%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">22</td>
+                        <td>Samantha Thavasa</td>
+                        <td>Flap top handle</td>
+                        <td class="right">350</td>
+                        <td class="right">200</td>
+                        <td class="right">50</td>
+                        <td class="right negative">-75.0%</td>
+                    </tr>
+                    <tr>
+                        <td class="center">23</td>
+                        <td>Bao Bao Issey Miyake</td>
+                        <td>Tote</td>
+                        <td class="right">-</td>
+                        <td class="right">650</td>
+                        <td class="right">-</td>
+                        <td class="right">-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-item">
+                <span class="stat-label">TOTAL RRP</span>
+                <span class="stat-value">A$78,325</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">TOTAL PURCHASE</span>
+                <span class="stat-value">A$45,410</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">TOTAL RESALE</span>
+                <span class="stat-value">A$37,140</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">DROP (VS RRP)</span>
+                <span class="stat-value negative">-A$41,185</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">DROP (VS PURCHASE)</span>
+                <span class="stat-value negative">-A$8,270</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('th').forEach(th => th.addEventListener('click', function() {
+            const table = th.closest('table');
+            const tbody = table.querySelector('tbody');
+            const thIndex = Array.from(th.parentNode.children).indexOf(th);
+            
+            // 清除所有的排序箭头状态
+            table.querySelectorAll('th').forEach(h => {
+                if (h !== th) {
+                    h.classList.remove('asc', 'desc');
+                    h.asc = undefined;
+                }
+            });
+
+            // 切换当前的排序状态
+            this.asc = !this.asc;
+            
+            // 添加对应的排序类名用于显示箭头
+            if (this.asc) {
+                th.classList.remove('desc');
+                th.classList.add('asc');
+            } else {
+                th.classList.remove('asc');
+                th.classList.add('desc');
+            }
+            
+            const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
+            
+            const parseValue = (v) => {
+                let val = v.replace(/,/g, '').replace(/%/g, '').replace(/\+/g, '').trim();
+                if (val === '-') return -Infinity;
+                if (!isNaN(val) && val !== '') return parseFloat(val);
+                return v;
+            };
+
+            const comparer = (idx, asc) => (a, b) => {
+                let v1 = parseValue(getCellValue(asc ? a : b, idx));
+                let v2 = parseValue(getCellValue(asc ? b : a, idx));
+
+                if (typeof v1 === 'number' && typeof v2 === 'number') {
+                    return v1 - v2;
+                }
+                return v1.toString().localeCompare(v2, undefined, {numeric: true});
+            };
+
+            Array.from(tbody.querySelectorAll('tr'))
+                .sort(comparer(thIndex, this.asc))
+                .forEach(tr => tbody.appendChild(tr));
+        }));
+    </script>
+</body>
+</html>
